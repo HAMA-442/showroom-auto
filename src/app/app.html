@@ -1,0 +1,25 @@
+<app-head-bar></app-head-bar>
+<app-search-bar [autos]="autoList" (onSelectCar)="selectCar($event)"></app-search-bar>
+@if(selectedCar){
+<div class="car-details">
+    <img class="details-photo" [src]="`photos/${selectedCar.photo}`" alt="">
+    <div class="details-text">
+        <h2>{{selectedCar.brand}} {{selectedCar.model}}</h2>
+        <p>{{selectedCar.description}}</p>
+        <p class="specs">
+            Puissance : {{selectedCar.power}} CV <br>
+            Prix : {{selectedCar.price * 1000 | number}} TND <br>
+            En stock : {{selectedCar.availability}} unité(s)
+        </p>
+        <div class="order">
+            <label>Quantité</label>
+            <input type="number" min="1" [max]="selectedCar.availability" [(ngModel)]="quantity">
+            @if(isQuantityValid){
+                <p class="total">Prix total : {{total * 1000 | number}} TND</p>
+            } @else {
+                <p class="warning">Veuillez choisir une quantité entre 1 et {{selectedCar.availability}}.</p>
+            }
+        </div>
+    </div>
+</div>
+}

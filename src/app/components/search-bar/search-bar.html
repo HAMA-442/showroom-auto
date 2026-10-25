@@ -1,0 +1,59 @@
+<!-- (input) on the container : any change in one of the fields refreshes the list -->
+<div class="header" (input)="selectAutos(brand.value, chosenBrand.value, maxPrice.value, minPower.value, sort.value)">
+    <div class="field">
+        <label>Marque</label>
+        <div class="search-input">
+            <input type="text" #brand placeholder="par exemple Audi">
+            <fa-icon [icon]="faMagnifyingGlass" />
+        </div>
+    </div>
+    <div class="field">
+        <label>Choisir une marque</label>
+        <select #chosenBrand>
+            <option value="">Toutes les marques</option>
+            @for(b of brands; track b){
+                <option [value]="b">{{b}}</option>
+            }
+        </select>
+    </div>
+    <div class="field">
+        <label>Prix max (milliers de TND)</label>
+        <input type="number" min="0" #maxPrice placeholder="par exemple 400">
+    </div>
+    <div class="field">
+        <label>Puissance min (CV)</label>
+        <input type="number" min="0" #minPower placeholder="par exemple 10">
+    </div>
+    <div class="field">
+        <label>Trier par</label>
+        <select #sort>
+            <option value="">Aucun tri</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            <option value="power-desc">Puissance décroissante</option>
+        </select>
+    </div>
+    <button class="reset-btn" (click)="reset(brand, chosenBrand, maxPrice, minPower, sort)">Réinitialiser</button>
+</div>
+@if(searched){
+    <p class="result-count">{{selectedAutos.length}} {{selectedAutos.length > 1 ? 'voitures trouvées' : 'voiture trouvée'}}</p>
+}
+    <div class="cars-container">
+    @for(auto of selectedAutos; track auto.id){
+        <div class="auto-card">
+            <img [src]="`photos/${auto.photo}`" alt="">
+            <div class="details">
+                <h3>{{auto.brand}} {{auto.model}}</h3>
+                <p>
+                    Puissance : {{auto.power}} CV <br>
+                    <span class="price">Prix : {{auto.price * 1000 | number}} TND</span><br>
+                    <span class="stock">Seulement {{auto.availability}} unités en stock !</span>
+                </p>
+            </div>
+            <div class="see-more">
+                <button (click)="selectCar(auto)">Voir plus...</button>
+            </div>
+        </div>
+    }
+
+</div>
